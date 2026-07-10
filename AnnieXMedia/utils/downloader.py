@@ -211,7 +211,12 @@ def get_final_path_from_info(info: Dict) -> Optional[str]:
 def download_with_ytdlp_sync(link: str, fmt: str):
     try:
         opts = get_ytdlp_base_opts()
-        opts["format"] = fmt
+opts["format"] = fmt
+opts["format_sort"] = [
+    "res:720",
+    "codec:h264",
+    "ext:mp4:m4a",
+]
 
         with YoutubeDL(opts) as ydl:
             info = ydl.extract_info(link, download=True)
@@ -291,7 +296,7 @@ async def yt_dlp_download(link: str, type: str, title: str = "") -> Optional[str
         async def run():
             ytdlp_task = asyncio.create_task(
                 run_with_semaphore(
-                    loop.run_in_executor(None, download_with_ytdlp_sync, link, "bestaudio/best")
+                    loop.run_in_executor(None, download_with_ytdlp_sync(link, "ba/b")
                 )
             )
             api_task = asyncio.create_task(api_download_audio(link)) if USE_AUDIO_API else None
@@ -310,7 +315,7 @@ async def yt_dlp_download(link: str, type: str, title: str = "") -> Optional[str
         async def run():
             ytdlp_task = asyncio.create_task(
                 run_with_semaphore(
-                    loop.run_in_executor(None, download_with_ytdlp_sync, link, "bestvideo+bestaudio/best")
+                    loop.run_in_executor(None, download_with_ytdlp_sync(link, "bv*+ba/b")
                 )
             )
             api_task = asyncio.create_task(api_download_video(link)) if USE_VIDEO_API else None
