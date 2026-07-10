@@ -1,4 +1,4 @@
-﻿# Authored By Certified Coders © 2025
+# Authored By Cbum © 2025
 import asyncio
 import contextlib
 import glob
@@ -86,7 +86,10 @@ def get_ytdlp_base_opts() -> Dict[str, object]:
 
     opts["extractor_args"] = {
         "youtube": {
-            "player_client": ["ios","android", "web"]
+            # "android" first: needs a PO Token far less strictly than
+            # "web"/"web_safari" do right now, so it fails less often.
+            # "web" kept as a fallback client only.
+            "player_client": ["android", "ios", "web"],
         }
     }
 
