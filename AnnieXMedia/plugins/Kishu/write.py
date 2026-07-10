@@ -34,7 +34,7 @@ async def handwrite(_, message: Message):
 
     caption = (
         f"📝 𝒮𝓊𝒸𝒸𝑒𝓈𝓈!\n\n"
-        f"✨ 𝒲𝓇𝒾𝓉𝓉𝑒𝓃 𝒷𝓎: [𝐀𝐍𝐍𝐈𝐄](https://t.me/{BOT_USERNAME})\n"
+        f"✨ 𝒲𝓇𝒾𝓉𝓉𝑒𝓃 𝒷𝓎: [𝘾𝘽𝙐𝙈](https://t.me/{BOT_USERNAME})\n"
         f"🥀 𝑅𝑒𝓆𝓊𝑒𝓈𝓉𝑒𝒹 𝒷𝓎: {message.from_user.mention}"
     )
 
