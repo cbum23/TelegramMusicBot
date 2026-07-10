@@ -211,12 +211,12 @@ def get_final_path_from_info(info: Dict) -> Optional[str]:
 def download_with_ytdlp_sync(link: str, fmt: str):
     try:
         opts = get_ytdlp_base_opts()
-opts["format"] = fmt
-opts["format_sort"] = [
-    "res:720",
-    "codec:h264",
-    "ext:mp4:m4a",
-]
+        opts["format"] = fmt
+        opts["format_sort"] = [
+           "res:720",
+           "codec:h264",
+           "ext:mp4:m4a",
+       ]
 
         with YoutubeDL(opts) as ydl:
             info = ydl.extract_info(link, download=True)
