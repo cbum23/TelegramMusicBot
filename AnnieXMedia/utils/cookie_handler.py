@@ -52,6 +52,7 @@ async def fetch_and_store_cookies():
         raise ConnectionError(f"⚠️ ᴄᴀɴ'ᴛ ꜰᴇᴛᴄʜ ᴄᴏᴏᴋɪᴇs:\n{e}")
 
     cookies = (response.text or "").strip()
+    print(cookies[:200])
 
     if not cookies.startswith("# Netscape"):
         raise ValueError("⚠️ ɪɴᴠᴀʟɪᴅ ᴄᴏᴏᴋɪᴇ ꜰᴏʀᴍᴀᴛ. ɴᴇᴇᴅs ɴᴇᴛsᴄᴀᴘᴇ ꜰᴏʀᴍᴀᴛ.")
