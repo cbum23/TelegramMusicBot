@@ -1,4 +1,4 @@
-﻿# Authored By Certified Coders © 2025
+﻿# Authored By Cbum © 2025
 import asyncio
 import importlib
 
