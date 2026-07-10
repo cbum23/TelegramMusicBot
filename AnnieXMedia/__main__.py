@@ -50,7 +50,7 @@ async def init():
     for all_module in ALL_MODULES:
         importlib.import_module("AnnieXMedia.plugins" + all_module)
 
-    LOGGER("AnnieXMedia.plugins").info("ᴀɴɴɪᴇ's ᴍᴏᴅᴜʟᴇs ʟᴏᴀᴅᴇᴅ...")
+    LOGGER("AnnieXMedia.plugins").info("ɴᴏᴠᴀ's ᴍᴏᴅᴜʟᴇs ʟᴏᴀᴅᴇᴅ...")
 
     await userbot.start()
     await StreamController.start()
