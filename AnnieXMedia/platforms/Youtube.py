@@ -393,7 +393,7 @@ class YouTubeAPI:
                 *(_cookies_args()),
                 "-g",
                 "-f",
-                "best[height<=?720][width<=?1280]",
+                "bestvideo+bestaudio/best",
                 link,
             )
             if stdout:
