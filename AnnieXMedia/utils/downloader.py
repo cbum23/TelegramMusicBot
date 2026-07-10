@@ -86,7 +86,7 @@ def get_ytdlp_base_opts() -> Dict[str, object]:
 
     opts["extractor_args"] = {
         "youtube": {
-            "player_client": ["android", "web"]
+            "player_client": ["ios","android", "web"]
         }
     }
 
