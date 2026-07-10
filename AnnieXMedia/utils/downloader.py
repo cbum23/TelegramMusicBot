@@ -285,6 +285,7 @@ async def race_ytdlp_and_api(yt_task, api_task, title: str):
 async def yt_dlp_download(link: str, type: str, title: str = "") -> Optional[str]:
     loop = asyncio.get_running_loop()
     vid = extract_video_id(link)
+
     if cached := find_cached_file(vid):
         if title:
             LOGGER.info(f"Track '{title}' - Served from cache")
@@ -294,36 +295,36 @@ async def yt_dlp_download(link: str, type: str, title: str = "") -> Optional[str
         key = f"audio:{link}"
 
         async def run():
-    ytdlp_task = asyncio.create_task(
-        run_with_semaphore(
-            loop.run_in_executor(
-                None,
-                download_with_ytdlp_sync,
-                link,
-                "bestaudio/best",
+            ytdlp_task = asyncio.create_task(
+                run_with_semaphore(
+                    loop.run_in_executor(
+                        None,
+                        download_with_ytdlp_sync,
+                        link,
+                        "ba/b",
+                    )
+                )
             )
-        )
-    )
 
-    api_task = (
-        asyncio.create_task(api_download_audio(link))
-        if USE_AUDIO_API
-        else None
-    )
+            api_task = (
+                asyncio.create_task(api_download_audio(link))
+                if USE_AUDIO_API
+                else None
+            )
 
-    if api_task:
-        return await race_ytdlp_and_api(
-            ytdlp_task,
-            api_task,
-            title or "Unknown",
-        )
+            if api_task:
+                return await race_ytdlp_and_api(
+                    ytdlp_task,
+                    api_task,
+                    title or "Unknown",
+                )
 
-    result = await ytdlp_task
+            result = await ytdlp_task
 
-    if result and title:
-        log_download_source(title, "yt-dlp")
+            if result and title:
+                log_download_source(title, "yt-dlp")
 
-    return result
+            return result
 
         return await deduplicate_download(key, run)
 
@@ -331,36 +332,36 @@ async def yt_dlp_download(link: str, type: str, title: str = "") -> Optional[str
         key = f"video:{link}"
 
         async def run():
-    ytdlp_task = asyncio.create_task(
-        run_with_semaphore(
-            loop.run_in_executor(
-                None,
-                download_with_ytdlp_sync,
-                link,
-                "bestvideo+bestaudio/best",
+            ytdlp_task = asyncio.create_task(
+                run_with_semaphore(
+                    loop.run_in_executor(
+                        None,
+                        download_with_ytdlp_sync,
+                        link,
+                        "bv*+ba/b",
+                    )
+                )
             )
-        )
-    )
 
-    api_task = (
-        asyncio.create_task(api_download_video(link))
-        if USE_VIDEO_API
-        else None
-    )
+            api_task = (
+                asyncio.create_task(api_download_video(link))
+                if USE_VIDEO_API
+                else None
+            )
 
-    if api_task:
-        return await race_ytdlp_and_api(
-            ytdlp_task,
-            api_task,
-            title or "Unknown",
-        )
+            if api_task:
+                return await race_ytdlp_and_api(
+                    ytdlp_task,
+                    api_task,
+                    title or "Unknown",
+                )
 
-    result = await ytdlp_task
+            result = await ytdlp_task
 
-    if result and title:
-        log_download_source(title, "yt-dlp")
+            if result and title:
+                log_download_source(title, "yt-dlp")
 
-    return result
+            return result
 
         return await deduplicate_download(key, run)
 
