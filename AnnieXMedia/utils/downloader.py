@@ -81,16 +81,18 @@ def get_ytdlp_base_opts() -> Dict[str, object]:
         "fragment_retries": 1,
         "cachedir": str(CACHE_DIR),
         "ignoreerrors": True,
-        "merge_output_format": "mp4"
+        "merge_output_format": "mp4",
     }
 
-        opts["extractor_args"] = {
+    opts["extractor_args"] = {
         "youtube": {
-        "player_client": ["android", "web"]
+            "player_client": ["android", "web"]
+        }
     }
-}
+
     if cookiefile := get_cookie_file():
         opts["cookiefile"] = cookiefile
+
     return opts
 
 
