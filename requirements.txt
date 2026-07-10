@@ -41,4 +41,5 @@ pytgcrypto
 unidecode
 wget
 yt-dlp
+bgutil-ytdlp-pot-provider
 git+https://github.com/CertifiedCoders/youtube-search-python
