@@ -201,17 +201,35 @@ def get_final_path_from_info(info: Dict) -> Optional[str]:
 
 
 def download_with_ytdlp_sync(link: str, fmt: str) -> Optional[str]:
-    try:
-        opts = get_ytdlp_base_opts()
-        opts["format"] = fmt
-        with YoutubeDL(opts) as ydl:
-            info = ydl.extract_info(link, download=False)
-            if path := get_final_path_from_info(info):
-                return path
-            ydl.download([link])
-            return get_final_path_from_info(info)
-    except Exception:
-        return None
+    formats = [
+        fmt,
+        "bestaudio/best",
+        "bestvideo+bestaudio/best",
+        "bv*+ba/b",
+        "best"
+    ]
+
+    for f in formats:
+        try:
+            opts = get_ytdlp_base_opts()
+            opts["format"] = f
+
+            with YoutubeDL(opts) as ydl:
+                info = ydl.extract_info(link, download=False)
+
+                if path := get_final_path_from_info(info):
+                    return path
+
+                ydl.download([link])
+
+                if path := get_final_path_from_info(info):
+                    return path
+
+        except Exception as e:
+            LOGGER.warning(f"Format '{f}' failed: {e}")
+            continue
+
+    return None
 
 
 async def run_with_semaphore(coro):
