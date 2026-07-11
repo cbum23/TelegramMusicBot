@@ -68,8 +68,9 @@ def find_cached_file(video_id: str) -> Optional[str]:
 def get_ytdlp_base_opts() -> Dict[str, object]:
     opts = {
         "outtmpl": f"{DOWNLOAD_DIR}/%(id)s.%(ext)s",
-        "quiet": True,
-        "no_warnings": True,
+        "quiet": False,
+        "no_warnings": False,
+        "verbose": True,
         "noplaylist": True,
         "overwrites": False,
         "continuedl": True,
