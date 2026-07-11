@@ -1,4 +1,4 @@
-# Authored By Cbum © 2025
+# Authored By Certified Coders © 2025
 import asyncio
 import contextlib
 import glob
@@ -91,8 +91,8 @@ def get_ytdlp_base_opts() -> Dict[str, object]:
             # "web" kept as a fallback client only.
             "player_client": ["android", "ios", "web"],
         },
-        "youtubepot-bgutilscript": {
-            "script_path": ["/opt/bgutil-ytdlp-pot-provider/server/build/generate_once.js"],
+        "youtubepot-bgutilhttp": {
+            "base_url": ["http://bgutil-ytdlp-pot-provider.railway.internal:4416"],
         },
     }
 
