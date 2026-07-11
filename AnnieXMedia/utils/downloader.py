@@ -86,21 +86,17 @@ def get_ytdlp_base_opts() -> Dict[str, object]:
     }
 
     opts["extractor_args"] = {
+        "youtube": {
+            "player_client": ["android"],
+        },
         "youtubepot-bgutilhttp": {
             "base_url": ["http://bgutil-ytdlp-pot-provider.railway.internal:4416"],
         },
     }
-    # NOTE: we intentionally do NOT pin "player_client" here anymore.
-    # YouTube keeps changing which client is SABR-restricted or
-    # bot-checked, and yt-dlp's maintainers update the *default*
-    # client-selection logic frequently to route around exactly this.
-    # Pinning a client list fights that adaptive logic. Cookies are
-    # restored below since some clients need them; the PO Token
-    # provider above supplies tokens automatically to whichever
-    # client yt-dlp ends up picking.
-
-    if cookiefile := get_cookie_file():
-        opts["cookiefile"] = cookiefile
+    # Cookies intentionally omitted for this diagnostic run -- android
+    # doesn't support them, and every cookie-compatible client is
+    # currently broken by either SABR or a missing Data Sync ID.
+    # cookiefile = get_cookie_file()
 
     return opts
 
