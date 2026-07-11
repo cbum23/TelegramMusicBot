@@ -3,6 +3,7 @@ import asyncio
 import contextlib
 import glob
 import os
+import random
 import re
 from typing import Dict, Optional
 
@@ -26,6 +27,29 @@ _inflight_lock = asyncio.Lock()
 _session: Optional[aiohttp.ClientSession] = None
 _session_lock = asyncio.Lock()
 YOUTUBE_ID_RE = re.compile(r"^[a-zA-Z0-9_-]{11}$")
+
+# PureVPN HTTP proxy pool, format from user: "host:port:username:password".
+# One is picked at random per download to spread load and avoid a single
+# IP getting flagged by YouTube.
+_PROXY_POOL = [
+    "px023005.pointtoserver.com:10780:purevpn0s551451:9dpdlc2nfxgj",
+    "px022505.pointtoserver.com:10780:purevpn0s551451:9dpdlc2nfxgj",
+    "px022507.pointtoserver.com:10780:purevpn0s551451:9dpdlc2nfxgj",
+    "px052001.pointtoserver.com:10780:purevpn0s551451:9dpdlc2nfxgj",
+    "px051003.pointtoserver.com:10780:purevpn0s551451:9dpdlc2nfxgj",
+    "px043006.pointtoserver.com:10780:purevpn0s551451:9dpdlc2nfxgj",
+    "px410701.pointtoserver.com:10780:purevpn0s551451:9dpdlc2nfxgj",
+    "px015601.pointtoserver.com:10780:purevpn0s551451:9dpdlc2nfxgj",
+    "px490701.pointtoserver.com:10780:purevpn0s551451:9dpdlc2nfxgj",
+]
+
+
+def get_random_proxy() -> Optional[str]:
+    if not _PROXY_POOL:
+        return None
+    entry = random.choice(_PROXY_POOL)
+    host, port, username, password = entry.split(":")
+    return f"http://{username}:{password}@{host}:{port}"
 
 
 def log_download_source(title: str, source: str) -> None:
@@ -68,9 +92,8 @@ def find_cached_file(video_id: str) -> Optional[str]:
 def get_ytdlp_base_opts() -> Dict[str, object]:
     opts = {
         "outtmpl": f"{DOWNLOAD_DIR}/%(id)s.%(ext)s",
-        "quiet": False,
-        "no_warnings": False,
-        "verbose": True,
+        "quiet": True,
+        "no_warnings": True,
         "noplaylist": True,
         "overwrites": False,
         "continuedl": True,
@@ -86,16 +109,21 @@ def get_ytdlp_base_opts() -> Dict[str, object]:
     }
 
     opts["extractor_args"] = {
-        "youtube": {
-            "player_client": ["mweb"],
-        },
         "youtubepot-bgutilhttp": {
             "base_url": ["http://bgutil-ytdlp-pot-provider.railway.internal:4416"],
         },
     }
+    # No "player_client" pin: let yt-dlp's actively-maintained default
+    # logic choose the best client. The proxy below is what actually
+    # fixes the "android"/"web" blocks -- those were triggered by
+    # Railway's datacenter IP being flagged by YouTube, not by client
+    # choice itself.
 
     if cookiefile := get_cookie_file():
         opts["cookiefile"] = cookiefile
+
+    if proxy := get_random_proxy():
+        opts["proxy"] = proxy
 
     return opts
 
