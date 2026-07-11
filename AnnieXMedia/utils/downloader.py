@@ -87,16 +87,15 @@ def get_ytdlp_base_opts() -> Dict[str, object]:
 
     opts["extractor_args"] = {
         "youtube": {
-            "player_client": ["android"],
+            "player_client": ["mweb"],
         },
         "youtubepot-bgutilhttp": {
             "base_url": ["http://bgutil-ytdlp-pot-provider.railway.internal:4416"],
         },
     }
-    # Cookies intentionally omitted for this diagnostic run -- android
-    # doesn't support them, and every cookie-compatible client is
-    # currently broken by either SABR or a missing Data Sync ID.
-    # cookiefile = get_cookie_file()
+
+    if cookiefile := get_cookie_file():
+        opts["cookiefile"] = cookiefile
 
     return opts
 
