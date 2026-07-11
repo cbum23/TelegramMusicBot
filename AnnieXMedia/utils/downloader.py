@@ -90,7 +90,10 @@ def get_ytdlp_base_opts() -> Dict[str, object]:
             # "web"/"web_safari" do right now, so it fails less often.
             # "web" kept as a fallback client only.
             "player_client": ["android", "ios", "web"],
-        }
+        },
+        "youtubepot-bgutilscript": {
+            "script_path": ["/opt/bgutil-ytdlp-pot-provider/server/build/generate_once.js"],
+        },
     }
 
     if cookiefile := get_cookie_file():
