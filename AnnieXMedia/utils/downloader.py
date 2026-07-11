@@ -85,26 +85,21 @@ def get_ytdlp_base_opts() -> Dict[str, object]:
     }
 
     opts["extractor_args"] = {
-        "youtube": {
-            # "web"/"web_safari" are dropped entirely: YouTube now force
-            # SABR streaming for them, which yields formats with no
-            # downloadable URL (only thumbnail images) no matter what
-            # cookies/PO Tokens are supplied. "android"/"ios" are not
-            # affected by SABR right now, so they're the only clients
-            # we ask for.
-            "player_client": ["android", "ios"],
-        },
         "youtubepot-bgutilhttp": {
             "base_url": ["http://bgutil-ytdlp-pot-provider.railway.internal:4416"],
         },
     }
+    # NOTE: we intentionally do NOT pin "player_client" here anymore.
+    # YouTube keeps changing which client is SABR-restricted or
+    # bot-checked, and yt-dlp's maintainers update the *default*
+    # client-selection logic frequently to route around exactly this.
+    # Pinning a client list fights that adaptive logic. Cookies are
+    # restored below since some clients need them; the PO Token
+    # provider above supplies tokens automatically to whichever
+    # client yt-dlp ends up picking.
 
-    # NOTE: cookies are intentionally NOT passed here. "android"/"ios"
-    # clients don't support cookies, and yt-dlp silently *skips* any
-    # client that doesn't support the cookies we give it -- which was
-    # forcing every request onto the broken "web" client. Without
-    # cookies, android/ios are used directly and succeed.
-    # cookiefile = get_cookie_file()  # left available if ever needed elsewhere
+    if cookiefile := get_cookie_file():
+        opts["cookiefile"] = cookiefile
 
     return opts
 
