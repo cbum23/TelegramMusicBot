@@ -68,9 +68,8 @@ def find_cached_file(video_id: str) -> Optional[str]:
 def get_ytdlp_base_opts() -> Dict[str, object]:
     opts = {
         "outtmpl": f"{DOWNLOAD_DIR}/%(id)s.%(ext)s",
-        "quiet": False,
-        "no_warnings": False,
-        "verbose": True,
+        "quiet": True,
+        "no_warnings": True,
         "noplaylist": True,
         "overwrites": False,
         "continuedl": True,
@@ -87,18 +86,25 @@ def get_ytdlp_base_opts() -> Dict[str, object]:
 
     opts["extractor_args"] = {
         "youtube": {
-            # "android" first: needs a PO Token far less strictly than
-            # "web"/"web_safari" do right now, so it fails less often.
-            # "web" kept as a fallback client only.
-            "player_client": ["android", "ios", "web"],
+            # "web"/"web_safari" are dropped entirely: YouTube now force
+            # SABR streaming for them, which yields formats with no
+            # downloadable URL (only thumbnail images) no matter what
+            # cookies/PO Tokens are supplied. "android"/"ios" are not
+            # affected by SABR right now, so they're the only clients
+            # we ask for.
+            "player_client": ["android", "ios"],
         },
         "youtubepot-bgutilhttp": {
             "base_url": ["http://bgutil-ytdlp-pot-provider.railway.internal:4416"],
         },
     }
 
-    if cookiefile := get_cookie_file():
-        opts["cookiefile"] = cookiefile
+    # NOTE: cookies are intentionally NOT passed here. "android"/"ios"
+    # clients don't support cookies, and yt-dlp silently *skips* any
+    # client that doesn't support the cookies we give it -- which was
+    # forcing every request onto the broken "web" client. Without
+    # cookies, android/ios are used directly and succeed.
+    # cookiefile = get_cookie_file()  # left available if ever needed elsewhere
 
     return opts
 
