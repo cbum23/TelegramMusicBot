@@ -92,8 +92,9 @@ def find_cached_file(video_id: str) -> Optional[str]:
 def get_ytdlp_base_opts() -> Dict[str, object]:
     opts = {
         "outtmpl": f"{DOWNLOAD_DIR}/%(id)s.%(ext)s",
-        "quiet": True,
-        "no_warnings": True,
+        "quiet": False,
+        "no_warnings": False,
+        "verbose": True,
         "noplaylist": True,
         "overwrites": False,
         "continuedl": True,
@@ -109,18 +110,16 @@ def get_ytdlp_base_opts() -> Dict[str, object]:
     }
 
     opts["extractor_args"] = {
+        "youtube": {
+            "player_client": ["android"],
+        },
         "youtubepot-bgutilhttp": {
             "base_url": ["http://bgutil-ytdlp-pot-provider.railway.internal:4416"],
         },
     }
-    # No "player_client" pin: let yt-dlp's actively-maintained default
-    # logic choose the best client. The proxy below is what actually
-    # fixes the "android"/"web" blocks -- those were triggered by
-    # Railway's datacenter IP being flagged by YouTube, not by client
-    # choice itself.
-
-    if cookiefile := get_cookie_file():
-        opts["cookiefile"] = cookiefile
+    # No cookies here -- android doesn't support them, and with the
+    # proxy now in place (residential IP instead of Railway's
+    # datacenter IP), android should no longer hit LOGIN_REQUIRED.
 
     if proxy := get_random_proxy():
         opts["proxy"] = proxy
