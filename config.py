@@ -79,14 +79,14 @@ STICKERS = [
     "CAACAgUAAx0Cd6nKUAACATJl_rsEJOsaaPSYGhU7bo7iEwL8AAPMDgACu2PYV8Vb8aT4_HUPHgQ",
 ]
 HELP_IMG_URL = "https://files.catbox.moe/yg2vky.jpg"
-PING_VID_URL = "https://files.catbox.moe/3ivvgo.mp4"
-PLAYLIST_IMG_URL = "https://files.catbox.moe/yhaja5.jpg"
-STATS_VID_URL = "https://telegra.ph/file/e2ab6106ace2e95862372.mp4"
-TELEGRAM_AUDIO_URL = "https://files.catbox.moe/mlztag.jpg"
-TELEGRAM_VIDEO_URL = "https://files.catbox.moe/tiss2b.jpg"
-STREAM_IMG_URL = "https://files.catbox.moe/1d3da7.jpg"
+PING_VID_URL = "https://files.catbox.moe/rs8s6e.png"
+PLAYLIST_IMG_URL = "https://files.catbox.moe/0l6ptn.png"
+STATS_VID_URL = "https://files.catbox.moe/04mhlg.png"
+TELEGRAM_AUDIO_URL = "https://files.catbox.moe/6x5ybq.png"
+TELEGRAM_VIDEO_URL = "https://files.catbox.moe/ifkyoz.png"
+STREAM_IMG_URL = "https://files.catbox.moe/5u3hd7.png"
 SOUNCLOUD_IMG_URL = "https://files.catbox.moe/zhymxl.jpg"
-YOUTUBE_IMG_URL = "https://files.catbox.moe/veykzq.jpg"
+YOUTUBE_IMG_URL = "https://files.catbox.moe/0l6ptn.png"
 SPOTIFY_ARTIST_IMG_URL = SPOTIFY_ALBUM_IMG_URL = SPOTIFY_PLAYLIST_IMG_URL = YOUTUBE_IMG_URL
 
 # ── Helpers ────────────────────────────────────────────────────────────────────
