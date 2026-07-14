@@ -12,7 +12,7 @@ def chunk_string(text, chunk_size):
 @app.on_message(filters.command("allrepo"))
 async def all_repo_command(client: Client, message: Message):
     if len(message.command) < 2:
-        return await message.reply_text("❌ Please enter a GitHub username.\n\nExample: `/allrepo CertifiedCoders`")
+        return await message.reply_text("❌ Please enter a GitHub username.\n\nExample: `/allrepo Cbum23`")
 
     username = message.command[1].strip()
 
